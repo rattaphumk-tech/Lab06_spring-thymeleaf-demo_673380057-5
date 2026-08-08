@@ -9,9 +9,11 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("message", "Hello from Thymeleaf with a custom ViewResolver!");
-        return "home"; // Logical View Name ("home")
+        model.addAttribute("message", "Rattaphum Kerdprajeen");
+        model.addAttribute("studentId", "673380057-5");
+        return "home";
     }
+
      // ต่อยอดข้อ 1: view name ใหม่ "about" -> จะถูก ViewResolver ตัวเดิม (order 1)
     // แปลงเป็น classpath:/custom-templates/about.html โดยอัตโนมัติ
     // แสดงว่า path resolution เดิมรองรับได้หลาย view โดยไม่ต้องแก้ ThymeleafConfig เลย
