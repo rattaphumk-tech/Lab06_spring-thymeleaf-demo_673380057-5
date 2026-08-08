@@ -10,16 +10,16 @@ import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 public class ThymeleafConfig {
 
     @Bean
-    public SpringResourceTemplateResolver templateResolver() {
-        SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setPrefix("classpath:/my-templates/"); // โฟลเดอร์ที่กำหนดเอง
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML");
-        resolver.setCharacterEncoding("UTF-8");
-        resolver.setCacheable(false); // ปิด cache ระหว่าง dev
-        resolver.setCheckExistence(true); // เช็คว่าไฟล์มีจริงก่อน ถ้าไม่มีให้ปล่อยให้ resolver ตัวถัดไปลอง
-        return resolver;
-    }
+public SpringResourceTemplateResolver templateResolver() {
+    SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+    resolver.setPrefix("classpath:/custom-templates/my-templates/"); 
+    resolver.setSuffix(".html");
+    resolver.setTemplateMode("HTML");
+    resolver.setCharacterEncoding("UTF-8");
+    resolver.setCacheable(false);
+    resolver.setCheckExistence(true);
+    return resolver;
+}
 
     @Bean
     public SpringTemplateEngine templateEngine(SpringResourceTemplateResolver templateResolver) {
@@ -49,7 +49,7 @@ public class ThymeleafConfig {
     @Bean
     public SpringResourceTemplateResolver secondaryTemplateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        resolver.setPrefix("classpath:/secondary-templates/"); // โฟลเดอร์อื่นอีกอัน
+        resolver.setPrefix("classpath:/custom-templates/secondary-templates/"); // โฟลเดอร์อื่นอีกอัน
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
         resolver.setCharacterEncoding("UTF-8");
