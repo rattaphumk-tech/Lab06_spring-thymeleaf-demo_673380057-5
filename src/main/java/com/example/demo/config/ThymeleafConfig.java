@@ -12,12 +12,12 @@ public class ThymeleafConfig {
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-        // กำหนดโฟลเดอร์ custom-templates แทน /templates/ ปกติ
-        resolver.setPrefix("classpath:/custom-templates/");
+        resolver.setPrefix("classpath:/my-templates/"); // โฟลเดอร์ที่กำหนดเอง
         resolver.setSuffix(".html");
         resolver.setTemplateMode("HTML");
         resolver.setCharacterEncoding("UTF-8");
-        resolver.setCacheable(false); // ปิด Cache เพื่อให้แก้ไขไฟล์แล้วเห็นผลทันทีขณะพัฒนา
+        resolver.setCacheable(false); // ปิด cache ระหว่าง dev
+        resolver.setCheckExistence(true); // เช็คว่าไฟล์มีจริงก่อน ถ้าไม่มีให้ปล่อยให้ resolver ตัวถัดไปลอง
         return resolver;
     }
 
@@ -33,10 +33,15 @@ public class ThymeleafConfig {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine);
         viewResolver.setCharacterEncoding("UTF-8");
-        viewResolver.setOrder(1); // ลำดับความสำคัญในการทำงาน
+        viewResolver.setOrder(1); // ลำดับความสำคัญ ถ้ามีหลาย ViewResolver ใน context เดียวกัน
+        // หมายเหตุ: การเช็คว่าไฟล์มีจริงหรือไม่ ถูกกำหนดที่ templateResolver().setCheckExistence(true)
+        // ด้านบน ไม่ใช่ที่ ThymeleafViewResolver โดยตรง — เมื่อไฟล์ไม่เจอ resolver ตัวนี้จะ
+        // คืนค่า null แทนที่จะ throw exception ทันที เปิดทางให้ Spring ลอง ViewResolver
+        // ตัวถัดไป (order 2, secondaryViewResolver) แทน
         return viewResolver;
     }
-     // ============================================================
+
+    // ============================================================
     // ต่อยอดข้อ 2: ViewResolver ตัวที่สอง (order 2) ชี้ไปโฟลเดอร์อื่น
     // (secondary-templates/) เพื่อสังเกตว่า Spring เลือก resolver ตัวไหนก่อน
     // ============================================================
